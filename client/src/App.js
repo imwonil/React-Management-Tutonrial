@@ -17,7 +17,7 @@ overflowX:"auto"
 },
 table:{
   minWidth: 1080 
-}
+} 
 
 })
 
