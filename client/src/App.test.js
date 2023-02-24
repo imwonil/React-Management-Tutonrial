@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import app from './setupProxy';
 
 test('renders learn react link', () => {
   render(<App />);
