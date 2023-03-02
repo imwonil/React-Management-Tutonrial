@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Customer from './copmpnents/Customer'
+import CustomerAdd from './copmpnents/CustomerAdd'
 import './App.css';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -26,11 +27,25 @@ progress: {
 }) 
 
 class App extends Component { 
-    state = { 
-      customers:"",
-      completed: 0
-    
-    }
+  
+  constructor(props) {
+super(props);
+this.state = {
+customers:'',
+completed:0
+
+}
+
+  }  
+  stateRefresh = () => {
+    this.setstate ( {
+      ustomers:'',
+      completed:0
+    });
+    this.callApi()
+      .then(res => this.setState({ customers: res}))
+      .catch(err => console.log(err));
+  }
     componentDidMount() {
       this.timer = setInterval(this.progress, 20);
       this.callApi() 
@@ -52,6 +67,7 @@ this.setState({ completed: completed >= 100 ? 0 : completed +1});
     render() { 
       const{ classes } = this.props;   
     return (
+      <div>
      
       <Paper className = {classes.root}>
     <Table className = {classes.table}>
@@ -68,24 +84,22 @@ this.setState({ completed: completed >= 100 ? 0 : completed +1});
       <TableBody> 
          {this.state.customers ?  this.state.customers.map (c => {
            return( <Customer  key={c.id} id={c.id}  
-           image={c.image}  name={c.name}  birthday={c.birthday} 
+            name={c.name}  birthday={c.birthday} 
             gender={c.gender}  job={c.job}  />); 
             }) :
             <TableRow>
 <TableCell colSpan= '6' align="center">
   <CircularProgress className={classes.progress}  variant="indeterminate" value={this.state.completed}/>
- 
-
-</TableCell>
-
+ </TableCell>
             </TableRow>
-            
-            }
+                 }
       </TableBody> 
     </Table>
-      
-     </Paper>
-   )
+      </Paper>
+     <CustomerAdd stateRefresh={this.stateRefresh}/>
+    </div>
+    
+   );
    }
   }
 
